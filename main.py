@@ -1,12 +1,12 @@
-# Bernhards Arnitis 221RDB128
+# Bernhards Arnitis 221RDB128 11.grupa
 # python3
 
 class Query:
     def __init__(self, query):
         self.type = query[0]
-        self.number = int(query[1])
+        self.skaitlis = int(query[1])
         if self.type == 'add':
-            self.name = query[2]
+            self.vards = query[2]
 
 def read_queries():
     n = int(input())
@@ -24,20 +24,15 @@ def process_queries(queries):
             # if we already have contact with such number,
             # we should rewrite contact's name
             contacts[cur_query.skaitlis] = cur_query.vards
-                
+      #  elif cur_query.type == 'find':
+
         elif cur_query.type == 'del':
             if cur_query.skaitlis in contacts:
                 del contacts[cur_query.skaitlis]
         else:
-            response = 'not found'
-            for contact in contacts:
-                if contact.skaitlis == cur_query.skaitlis:
-                    response = contact.var
-                    break
+            response = contacts.get(cur_query.skaitlis, 'not found')
             result.append(response)
     return result
 
 if __name__ == '__main__':
     write_responses(process_queries(read_queries()))
-
-
