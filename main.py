@@ -18,31 +18,26 @@ def write_responses(result):
 def process_queries(queries):
     result = []
     # Keep list of all existing (i.e. not deleted yet) contacts.
-    contacts = []
+    contacts = {}
     for cur_query in queries:
         if cur_query.type == 'add':
             # if we already have contact with such number,
             # we should rewrite contact's name
-            for contact in contacts:
-                if contact.number == cur_query.number:
-                    contact.name = cur_query.name
-                    break
-            else: # otherwise, just add it
-                contacts.append(cur_query)
+            contacts[cur_query.skaitlis] = cur_query.vards
+                
         elif cur_query.type == 'del':
-            for i in range(len(contacts)):
-                if contacts[i].number == cur_query.number:
-                    contacts.pop(i)
-                    break
+            if cur_query.skaitlis in contacts:
+                del contacts[cur_query.skaitlis]
         else:
             response = 'not found'
             for contact in contacts:
-                if contact.number == cur_query.number:
-                    response = contact.name
+                if contact.skaitlis == cur_query.skaitlis:
+                    response = contact.var
                     break
             result.append(response)
     return result
 
 if __name__ == '__main__':
     write_responses(process_queries(read_queries()))
+
 
